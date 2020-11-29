@@ -1,6 +1,6 @@
 ---
 - name: Install Podman on WSL (Ubuntu 20.04)
-  hosts: all
+  hosts: localhost
   tasks:
 
     - name: Add kubic repository key.
