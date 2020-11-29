@@ -6,14 +6,17 @@ Automated install Podman on WSL
 
 - Ubuntu
 - Debian 10
-
+- Arch Linux
 
 ## How to use
 
 Make sure Ansible is installed.
 
 ```
+# Debian/Ubuntu:
 sudo apt update && sudo apt -y install python3-pip git && sudo pip3 install ansible
+# Arch Linux:
+pacman -S ansible git
 ```
 
 Run the automation

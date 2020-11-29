@@ -6,7 +6,7 @@
     - name: Ensure distro is supported.
       assert:
         that:
-          - ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+          - ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'Archlinux'
 
     - name: Add kubic repository key on Ubuntu.
       apt_key:
@@ -32,7 +32,7 @@
         state: present
       when: ansible_distribution == 'Debian'
 
-    - name: Update repositories cache and install containers packages.
+    - name: Update repositories cache and install containers packages (Debian/Ubuntu).
       apt:
         name:
           - podman
@@ -43,6 +43,19 @@
         state: latest
       when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
       
+
+    - name: Update repositories cache and install containers packages (Archlinux).
+      pacman:
+        name:
+          - podman
+          - buildah
+          - skopeo
+          - slirp4netns
+        update_cache: yes
+        state: latest
+      when: ansible_distribution == 'Archlinux'
+      
+
     - name: Set cgroup_manager to cgroupfs.
       lineinfile:
         path: /etc/containers/containers.conf
