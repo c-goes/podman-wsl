@@ -1,0 +1,38 @@
+---
+- name: Install Podman on WSL (Ubuntu 20.04)
+  hosts: 127.0.0.1
+  tasks:
+
+    - name: Add kubic repository key.
+      apt_key:
+        url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_{{ ansible_distribution_version}}/Release.key
+        state: present
+
+    - name: Add kubic repository.
+      apt_repository:
+        repo: deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version}}/ /
+        state: present
+
+    - name: Update repositories cache and install containers packages.
+      apt:
+        name:
+          - podman
+          - buildah
+          - skopeo
+          - slirp4netns
+        update_cache: yes
+        state: latest
+      
+    - name: Set cgroup_manager to cgroupfs.
+      lineinfile:
+        path: /etc/containers/containers.conf
+        regexp: ^cgroup_manager
+        line: cgroup_manager = "cgroupfs"
+        insertafter: '^# cgroup_manager'
+
+    - name: Set events_logger to file.
+      lineinfile:
+        path: /etc/containers/containers.conf
+        regexp: ^events_logger
+        line: events_logger = "file"
+        insertafter: '^# events_logger'
