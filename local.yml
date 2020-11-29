@@ -3,15 +3,36 @@
   hosts: localhost
   tasks:
 
+    - name: Ensure distro is supported.
+      assert:
+        that:
+          - ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+
     - name: Add kubic repository key.
       apt_key:
         url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_{{ ansible_distribution_version}}/Release.key
         state: present
+      when: ansible_distribution == 'Ubuntu'
 
     - name: Add kubic repository.
       apt_repository:
         repo: deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version}}/ /
         state: present
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Add kubic repository key.
+      apt_key:
+        url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/Debian_{{ ansible_distribution_version}}/Release.key
+        state: present
+      when: ansible_distribution == 'Debian'
+
+    - name: Add kubic repository.
+      apt_repository:
+        repo: deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_{{ ansible_distribution_version}}/ /
+        state: present
+      when: ansible_distribution == 'Debian'
+
+
 
     - name: Update repositories cache and install containers packages.
       apt:
@@ -22,6 +43,7 @@
           - slirp4netns
         update_cache: yes
         state: latest
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
       
     - name: Set cgroup_manager to cgroupfs.
       lineinfile:
