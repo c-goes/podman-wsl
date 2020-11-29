@@ -51,7 +51,6 @@
           - buildah
           - skopeo
           - slirp4netns
-        update_cache: yes
         state: latest
       when: ansible_distribution == 'Archlinux'
       
