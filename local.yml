@@ -1,5 +1,5 @@
 ---
-- name: Install Podman on WSL (Ubuntu 20.04)
+- name: Install Podman on WSL distros.
   hosts: localhost
   tasks:
 
@@ -8,31 +8,29 @@
         that:
           - ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
 
-    - name: Add kubic repository key.
+    - name: Add kubic repository key on Ubuntu.
       apt_key:
         url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_{{ ansible_distribution_version}}/Release.key
         state: present
       when: ansible_distribution == 'Ubuntu'
 
-    - name: Add kubic repository.
+    - name: Add kubic repository on Ubuntu.
       apt_repository:
         repo: deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version}}/ /
         state: present
       when: ansible_distribution == 'Ubuntu'
 
-    - name: Add kubic repository key.
+    - name: Add kubic repository key on Debian.
       apt_key:
         url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/Debian_{{ ansible_distribution_version}}/Release.key
         state: present
       when: ansible_distribution == 'Debian'
 
-    - name: Add kubic repository.
+    - name: Add kubic repository on Debian.
       apt_repository:
         repo: deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_{{ ansible_distribution_version}}/ /
         state: present
       when: ansible_distribution == 'Debian'
-
-
 
     - name: Update repositories cache and install containers packages.
       apt:
