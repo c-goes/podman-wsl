@@ -1,6 +1,6 @@
 # podman-wsl
 
-Automated install Podman on WSL
+Automated install Podman on WSL. This Playbook is an updated version of the steps decribed in [this blog article](https://www.redhat.com/sysadmin/podman-windows-wsl2).
 
 ## Supported Distros
 
